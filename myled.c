@@ -15,6 +15,19 @@ static struct class *cls = NULL;
 
 static volatile u32 *gpio_base = NULL;  //アドレスをマッピングするための配列をグローバルで定義
 
+static ssize_t led_write(struct file* filp, const char* buf, size_t count, loff_t* pos)
+{
+    char c;
+    if(copy_from_user(&c,buf,sizeof(char)))
+        return -EFAULT;
+
+    if(c == '0')
+        gpio_base[10] = 1 << 25;
+    else if(c == '1')
+        gpio_base[7] = 1 << 25;
+
+    return 1;
+}
 
 // static ssize_t sushi_read(struct file* filp, char* buf, size_t count, loff_t* pos)
 // {
@@ -34,15 +47,15 @@ static volatile u32 *gpio_base = NULL;  //アドレスをマッピングする�
 //      .read = sushi_read
 // };
 
-static ssize_t led_write(struct file* filp, const char* buf, size_t count, loff_t* pos)
-{
-char c;   //読み込んだ字を入れる変数
- if(copy_from_user(&c,buf,sizeof(char)))
- return -EFAULT;
+// static ssize_t led_write(struct file* filp, const char* buf, size_t count, loff_t* pos)
+// {
+// char c;   //読み込んだ字を入れる変数
+//  if(copy_from_user(&c,buf,sizeof(char)))
+//  return -EFAULT;
 
-printk(KERN_INFO "receive %c\n",c);
-return 1;
-}
+// printk(KERN_INFO "receive %c\n",c);
+// return 1;
+// }
 
 static struct file_operations led_fops = {
        .owner = THIS_MODULE,
@@ -74,6 +87,11 @@ static int __init init_mod(void) //カーネルモジュールの初期化
         }
 	device_create(cls, NULL, dev, NULL, "myled%d",MINOR(dev));
 	gpio_base = ioremap_nocache(0x3f200000, 0xA0); //Pi4の場合は0xfe200000
+ 	const u32 led = 25;
+  const u32 index = led/10;//GPFSEL2
+  const u32 shift = (led%10)*3;//15bit
+  const u32 mask = ~(0x7 << shift);//11111111111111000111111111111111
+  gpio_base[index] = (gpio_base[index] & mask) | (0x1 << shift);//001: output flag
 	return 0;
 }
 
