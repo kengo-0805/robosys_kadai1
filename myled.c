@@ -16,38 +16,38 @@ static struct class *cls = NULL;
 static volatile u32 *gpio_base = NULL;  //アドレスをマッピングするための配列をグローバルで定義
 
 
-static ssize_t sushi_read(struct file* filp, char* buf, size_t count, loff_t* pos)
+// static ssize_t sushi_read(struct file* filp, char* buf, size_t count, loff_t* pos)
+// {
+//     int size = 0;
+//      char sushi[] = {0xF0,0x9F,0x8D,0xA3,0x0A}; //寿司の絵文字のバイナリ
+//      if(copy_to_user(buf+size,(const char *)sushi, sizeof(sushi))){
+//         printk( KERN_INFO "sushi : copy_to_user failed\n" );
+//      return -EFAULT;
+//      }
+//      size += sizeof(sushi);
+//     return size;
+// }
+
+// static struct file_operations led_fops = {
+//      .owner = THIS_MODULE,
+//      .write = led_write,
+//      .read = sushi_read
+// };
+
+static ssize_t led_write(struct file* filp, const char* buf, size_t count, loff_t* pos)
 {
-    int size = 0;
-     char sushi[] = {0xF0,0x9F,0x8D,0xA3,0x0A}; //寿司の絵文字のバイナリ
-     if(copy_to_user(buf+size,(const char *)sushi, sizeof(sushi))){
-        printk( KERN_INFO "sushi : copy_to_user failed\n" );
-     return -EFAULT;
-     }
-     size += sizeof(sushi);
-    return size;
+char c;   //読み込んだ字を入れる変数
+ if(copy_from_user(&c,buf,sizeof(char)))
+ return -EFAULT;
+
+printk(KERN_INFO "receive %c\n",c);
+return 1;
 }
 
 static struct file_operations led_fops = {
-     .owner = THIS_MODULE,
-     .write = led_write,
-     .read = sushi_read
+       .owner = THIS_MODULE,
+       .write = led_write //頸動脈
 };
-
-//static ssize_t led_write(struct file* filp, const char* buf, size_t count, loff_t* pos)
-//{
-// char c;   //読み込んだ字を入れる変数
- //if(copy_from_user(&c,buf,sizeof(char)))
- //return -EFAULT;
-
-// printk(KERN_INFO "receive %c\n",c);
-// return 1;
-//}
-
-//static struct file_operations led_fops = {
-//        .owner = THIS_MODULE,
-//        .write = led_write //頸動脈
-//};
 
 
 
