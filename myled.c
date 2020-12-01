@@ -3,6 +3,7 @@
 #include <linux/cdev.h>
 #include <linux/device.h>
 #include <linux/uaccess.h>
+#include <linux/io.h>
 MODULE_AUTHOR("Kengo Horii");
 MODULE_DESCRIPTION("driver for LED control");
 MODULE_LICENSE("GPL");
@@ -11,6 +12,9 @@ MODULE_VERSION("0.0.1");
 static dev_t dev;
 static struct cdev cdv;
 static struct class *cls = NULL;
+
+static volatile u32 *gpio_base = NULL;  //アドレスをマッピングするための配列をグローバルで定義
+
 
 static ssize_t sushi_read(struct file* filp, char* buf, size_t count, loff_t* pos)
 {
@@ -69,6 +73,7 @@ static int __init init_mod(void) //カーネルモジュールの初期化
                 return PTR_ERR(cls);
         }
 	device_create(cls, NULL, dev, NULL, "myled%d",MINOR(dev));
+	gpio_base = ioremap_nocache(0x3f200000, 0xA0); //Pi4の場合は0xfe200000
 	return 0;
 }
 
