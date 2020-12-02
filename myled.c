@@ -4,7 +4,8 @@
 #include <linux/device.h>
 #include <linux/uaccess.h>
 #include <linux/io.h>
-MODULE_AUTHOR("Kengo Horii");
+#include <linux/delay.h>
+MODULE_AUTHOR("Kengo Horii+Ryuichi Ueda");
 MODULE_DESCRIPTION("driver for LED control");
 MODULE_LICENSE("GPL");
 MODULE_VERSION("0.0.1");
@@ -18,11 +19,21 @@ static volatile u32 *gpio_base = NULL;  //アドレスをマッピングする�
 static ssize_t led_write(struct file* filp, const char* buf, size_t count, loff_t* pos)
 {
     char c;
+    int i = 0;
     if(copy_from_user(&c,buf,sizeof(char)))
         return -EFAULT;
 
-    if(c == '0')
-        gpio_base[10] = 1 << 25;
+    if(c == '0'){
+	while(i<10){
+        gpio_base[7] = 1 << 25;
+	msleep(10);
+ 	gpio_base[10] = 1 << 25;
+	msleep(1250);
+	i++;
+	}
+	}
+
+
     else if(c == '1')
         gpio_base[7] = 1 << 25;
 
