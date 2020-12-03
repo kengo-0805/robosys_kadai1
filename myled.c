@@ -34,10 +34,10 @@ static ssize_t led_write(struct file* filp, const char* buf, size_t count, loff_
 	}
 
 
-    else if(c == '1')
-        gpio_base[7] = 1 << 25;
+	else if(c == '1')
+        	gpio_base[7] = 1 << 25;
 
-    return 1;
+    		return 1;
 }
 
 // static ssize_t sushi_read(struct file* filp, char* buf, size_t count, loff_t* pos)
