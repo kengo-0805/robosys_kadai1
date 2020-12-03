@@ -24,14 +24,14 @@ static ssize_t led_write(struct file* filp, const char* buf, size_t count, loff_
         return -EFAULT;
 
     if(c == '0'){
-	while(i<10){
-        gpio_base[7] = 1 << 25;
-	msleep(10);
- 	gpio_base[10] = 1 << 25;
-	msleep(1250);
-	i++;
-	}
-	}
+				while(i<10){
+        	gpio_base[7] = 1 << 25;
+					msleep(10);
+ 					gpio_base[10] = 1 << 25;
+					msleep(1250);
+					i++;
+				}
+		}
 
 
     else if(c == '1')
