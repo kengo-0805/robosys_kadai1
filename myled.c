@@ -18,19 +18,19 @@ static volatile u32 *gpio_base = NULL;  //アドレスをマッピングする�
 
 static ssize_t led_write(struct file* filp, const char* buf, size_t count, loff_t* pos)
 {
-    char c;
-    int i = 0;
-    if(copy_from_user(&c,buf,sizeof(char)))
+    	char c;
+    	int i = 0;
+    	if(copy_from_user(&c,buf,sizeof(char)))
         return -EFAULT;
 
-    if(c == '0'){
-	while(i<10){
-        	gpio_base[7] = 1 << 25;
-		msleep(10);
- 		gpio_base[10] = 1 << 25;
-		msleep(1250);
-		i++;
-	}
+	if(c == '0'){
+		while(i<10){
+        		gpio_base[7] = 1 << 25;
+			msleep(10);
+ 			gpio_base[10] = 1 << 25;
+			msleep(1250);
+			i++;
+		}
 	}
 
 
