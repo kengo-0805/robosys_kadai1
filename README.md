@@ -13,6 +13,7 @@
 ```
 $ git clone https://github.com/kengo-0805/robosys_kadai1.git
 $ cd robosys_kadai1
+$ make
 $ sudo insmod myled.ko
 $ sudo chmod 666/dev/mled0
 $ echo 0 > /dev/myled0
