@@ -1,3 +1,8 @@
+// SPDX-License-Identifer: GPL-2.0
+/*
+ * Copyright (C) 2020 Kengo Horii,Ryuici Ueda. All rights reserved.
+ */
+
 obj-m := myled.o        #オブジェクトファイルの名前を指定（拡張子はo）
 
 myled.ko: myled.c

@@ -1,3 +1,9 @@
+
+// SPDX-License-Identifer: GPL-2.0
+/*
+ * Copyright (C) 2020 Kengo Horii,Ryuici Ueda. All rights reserved.
+ */
+
 #include <linux/module.h>
 #include <linux/fs.h>
 #include <linux/cdev.h>
@@ -5,7 +11,7 @@
 #include <linux/uaccess.h>
 #include <linux/io.h>
 #include <linux/delay.h>
-MODULE_AUTHOR("Kengo Horii+Ryuichi Ueda");
+MODULE_AUTHOR("Kengo Horii,Ryuichi Ueda");
 MODULE_DESCRIPTION("driver for LED control");
 MODULE_LICENSE("GPL");
 MODULE_VERSION("0.0.1");
