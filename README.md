@@ -9,12 +9,19 @@
 - LED(赤) ×1
 - 抵抗 220Ω ×1
 - ジャンパー線 ×3
+## 回路図と配線の様子
+回路
+![回路](fig/IMG_9CB5C0CFD47C-1.jpeg "回路")
+
+配線
+![配線](fig/haisen.png "配線")
 ## 実行手順
 ```
 $ git clone https://github.com/kengo-0805/robosys_kadai1.git
 $ cd robosys_kadai1
 $ make
 $ sudo insmod myled.ko
+$ sudo rmmod myled (削除する場合)
 $ sudo chmod 666/dev/mled0
 $ echo 0 > /dev/myled0
 ```
