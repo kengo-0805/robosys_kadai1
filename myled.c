@@ -1,5 +1,5 @@
 
-// SPDX-License-Identifer: GPL-2.0
+// SPDX-License-Identifer: GPL-3.0
 /*
  * Copyright (C) 2020 Kengo Horii,Ryuici Ueda. All rights reserved.
  */
@@ -26,8 +26,9 @@ static ssize_t led_write(struct file* filp, const char* buf, size_t count, loff_
 {
     	char c;
     	int i = 0;
-    	if(copy_from_user(&c,buf,sizeof(char)))
+    	if(copy_from_user(&c,buf,sizeof(char))){
         return -EFAULT;
+	}
 
 	if(c == '0'){
 		while(i < 10){
